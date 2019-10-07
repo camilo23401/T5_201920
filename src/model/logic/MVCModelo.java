@@ -18,7 +18,7 @@ public class MVCModelo {
 	 */
 	public MVCModelo()
 	{
-		datos = new ArregloDinamico(7);
+		
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class MVCModelo {
 	 */
 	public MVCModelo(int capacidad)
 	{
-		datos = new ArregloDinamico(capacidad);
+	
 	}
 	
 	/**
