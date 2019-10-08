@@ -3,6 +3,7 @@ package controller;
 import java.util.Scanner;
 
 import model.logic.MVCModelo;
+import model.logic.TravelTime;
 import view.MVCView;
 
 public class Controller {
@@ -36,58 +37,37 @@ public class Controller {
 			int option = lector.nextInt();
 			switch(option){
 				case 1:
-					System.out.println("--------- \nCrear Arreglo \nDar capacidad inicial del arreglo: ");
-				    int capacidad = lector.nextInt();
-				    modelo = new MVCModelo(capacidad); 
-					System.out.println("Arreglo Dinamico creado");
-					System.out.println("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-					break;
-
-				case 2:
-					System.out.println("--------- \nDar cadena (simple) a ingresar: ");
-					dato = lector.next();
-					modelo.agregar(dato);
-					System.out.println("Dato agregado");
-					System.out.println("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-					break;
-
-				case 3:
-					System.out.println("--------- \nDar cadena (simple) a buscar: ");
-					dato = lector.next();
-					respuesta = modelo.buscar(dato);
-					if ( respuesta != null)
+					try
 					{
-						System.out.println("Dato encontrado: "+ respuesta);
+						TravelTime[] primeroYSegundo = modelo.cargarDatos();
+						System.out.println("Cargó datos");
+						for(int i=0; i<primeroYSegundo.length;i++)
+						{
+							TravelTime actual = primeroYSegundo[i];
+							System.out.println();
+							if(i == 0)
+							{
+								System.out.println("PRIMER VIAJE");	
+							}
+							else
+							{
+								System.out.println("ULTIMO VIAJE");
+							}
+							System.out.println("------------------------");
+							System.out.println("Origen: "+actual.darSourceid());
+							System.out.println("Destino: "+actual.darDistid());
+							System.out.println("Día de la semana: "+ actual.darDow());
+							System.out.println("Tiempo promedio en viaje: "+actual.darMeanTravelTime());
+							System.out.println("------------------------");
+						}
 					}
-					else
+					catch(Exception e)
 					{
-						System.out.println("Dato NO encontrado");
+						e.getMessage();
 					}
-					System.out.println("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-					break;
-
-				case 4:
-					System.out.println("--------- \nDar cadena (simple) a eliminar: ");
-					dato = lector.next();
-					respuesta = modelo.eliminar(dato);
-					if ( respuesta != null)
-					{
-						System.out.println("Dato eliminado "+ respuesta);
-					}
-					else
-					{
-						System.out.println("Dato NO eliminado");							
-					}
-					System.out.println("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-					break;
-
-				case 5: 
-					System.out.println("--------- \nContenido del Arreglo: ");
-					view.printModelo(modelo);
-					System.out.println("Numero actual de elementos " + modelo.darTamano() + "\n---------");						
-					break;	
 					
-				case 6: 
+					break;
+				case 2: 
 					System.out.println("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;

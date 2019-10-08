@@ -18,26 +18,29 @@ public class MVCModelo {
 	 * Atributos del modelo del mundo
 	 */
 	private IArregloDinamico datos;
-	private TablaHashLineal<Comparable<K>, V> tablaLineal;
-	private HashSeparateChaining<Comparable<K>, V> tablaChaining;
-	
+	private String llave;
+	private double value;
+	private TablaHashLineal<String, Double> tablaLineal;
+	private HashSeparateChaining<String, Double> tablaChaining;
+
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public MVCModelo()
 	{
-		
+
 	}
-	
+
 	/**
 	 * Constructor del modelo del mundo con capacidad dada
 	 * @param tamano
 	 */
 	public MVCModelo(int capacidad)
 	{
-	
+		llave = "";
+		value = 0.0;
 	}
-	
+
 	/**
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
 	 * @return numero de elementos presentes en el modelo
@@ -55,7 +58,7 @@ public class MVCModelo {
 	{	
 		datos.agregar(dato);
 	}
-	
+
 	/**
 	 * Requerimiento buscar dato
 	 * @param dato Dato a buscar
@@ -65,7 +68,7 @@ public class MVCModelo {
 	{
 		return datos.buscar(dato);
 	}
-	
+
 	/**
 	 * Requerimiento eliminar dato
 	 * @param dato Dato a eliminar
@@ -75,27 +78,45 @@ public class MVCModelo {
 	{
 		return datos.eliminar(dato);
 	}
-	public void cargarDatos() throws Exception
+	public TravelTime[] cargarDatos() throws Exception
 	{
+		TravelTime[] rta = new TravelTime[2];
 		int contador = 0;
+		TravelTime primero = null;
+		TravelTime ultimo = null;
 		for(int i = 1;i<5;i++)
 		{
-			String ruta = "data/bogota-cadastral-2018-"+i+"-All-MonthlyAggregate.csv";
+			Short trimestre = (short) i;
+			String ruta = "data/bogota-cadastral-2018-"+i+"-WeeklyAggregate.csv";
 			CSVReader lector = new CSVReader(new FileReader(ruta)); 
 			String [] siguiente;
 			while ((siguiente = lector.readNext()) != null) 
 			{
 				if(contador!=0)
 				{
-					TravelTime viaje = new TravelTime(Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));
-					tablaLineal
+					if(contador==1)
+					{
+						TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
+						llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
+						value = Double.parseDouble(siguiente[3]);
+				     	//tablaLineal.put(llave, value);
+						//tablaChaining.put(llave, value);
+						primero = viaje;	
+					}
+					TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));
+					llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
+					value = Double.parseDouble(siguiente[3]);
+					//tablaLineal.put(llave, value);
+					//tablaChaining.put(llave, value);
+					ultimo = viaje;
 				}
 				contador++;
 			}
 			lector.close();
 			contador = 0;
 		}
+		rta[0] = primero;
+		rta[1] = ultimo;
+		return rta;
 	}
-
-
 }

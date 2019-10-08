@@ -47,6 +47,16 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 
 	public void putInSet(K llave, V valor) 
 	{
+		if(get(llave)==null)
+		{
+			NodoHash<K, V> paraAgregar = new NodoHash<K, V>(llave, valor);
+			ArregloDinamico<NodoHash<K, V>> setValue = new ArregloDinamico<NodoHash<K,V>>(2);
+			setValue.agregar(paraAgregar);
+		}
+		else
+		{
+			
+		}
 
 	}
 

@@ -2,19 +2,25 @@ package model.logic;
 
 public class TravelTime implements Comparable <TravelTime>
 {
+	private Short trimestre;
 	private int sourceid;
 	private int distid;
 	private int dow;
 	private double mean_travel_time;
 	private double standard_deviation_travel_time;
 
-	public TravelTime (int pSourceid, int pDistid, int pDow, Double pMean_time, double pStandard_deviation)
+	public TravelTime (Short pTrimestre, int pSourceid, int pDistid, int pDow, Double pMean_time, double pStandard_deviation)
 	{
+		trimestre = pTrimestre;
 		sourceid= pSourceid;
 		distid = pDistid;
 		dow = pDow;
 		mean_travel_time = pMean_time;
 		standard_deviation_travel_time = pStandard_deviation;
+	}
+	public int darTrimestre()
+	{
+		return trimestre;
 	}
 	public int darSourceid()
 	{
