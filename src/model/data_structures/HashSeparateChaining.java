@@ -17,19 +17,21 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	public HashSeparateChaining(int n) {
 		this.capacidad = n;
 		listaNodos=new ArregloDinamico<NodoHash<K,V>>(n);
+		tamanio=0;
 	} 
 
 	@Override
 	public void put(K llave, V valor) {
 		NodoHash<K,V>agregado=new NodoHash<K,V>(llave,valor);
-		if(listaNodos.contains(agregado)) {
+		if(tamanio>=1&&listaNodos.contains(agregado)) {
 			NodoHash<K,V>cambiar=listaNodos.darElemento(agregado);
 			cambiar.setValor(valor);
 		}
 		else {
-			int pos = hashCode();
-			listaNodos.agregarPos(agregado, pos);
 			tamanio++;
+			int pos = hashCode(agregado.getLlave());	
+			System.out.println(pos);
+			listaNodos.agregarPos(agregado, pos);
 			if ((1.0*tamanio)/capacidad >= 0.75) 
 			{ 
 				ArregloDinamico<NodoHash<K, V>> temp = listaNodos; 
@@ -40,12 +42,13 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 					listaNodos.agregarPos(null,i); 
 
 				for(int i=0;i<temp.darTamano();i++) {
-					listaNodos.agregarPos(temp.darElementoPos(i),i);
+					put(temp.darElementoPos(i).getLlave(),temp.darElementoPos(i).getValor());
 				}
 			} 
 		}
 
 	}
+
 
 	@Override
 	public void putInSet(K llave, V valor) {
@@ -56,22 +59,25 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 			tamanio++;
 		}
 		else {
-			int pos = hashCode();
-			listaNodos.agregarPos(agregado, pos);
 			tamanio++;
+			int pos = hashCode(agregado.getLlave());	
+			listaNodos.agregarPos(agregado, pos);
+
 			if ((1.0*tamanio)/capacidad >= 0.75) 
 			{ 
 				ArregloDinamico<NodoHash<K, V>> temp = listaNodos; 
 				capacidad = 2 * capacidad; 
-				listaNodos = new ArregloDinamico<>(capacidad);         
-				tamanio = 0; 
-				for (int i = 0; i < capacidad; i++) 
-					listaNodos.agregarPos(null,i); 
+				listaNodos = new ArregloDinamico<>(capacidad);  
+				tamanio=0;
+				for(int i=0;i<temp.darCapacidad();i++) {
+					NodoHash<K,V>actual=temp.darElementoPos(i);				
+					while(actual!=null) {
+						putInSet(actual.getLlave(),actual.getValor());
+						actual=actual.getSiguiente();
+					}
 
-				for(int i=0;i<temp.darTamano();i++) {
-					listaNodos.agregarPos(temp.darElementoPos(i),i);
-				}
-			} 
+				} 
+			}
 		}
 
 	}
@@ -82,7 +88,7 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 		V buscado=null;
 		for (int i = 0; i < listaNodos.darTamano()&&!encontrado; i++) {
 			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
-			if(actual.getLlave().compareTo(llave)==0) {
+			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
 				encontrado=true;
 				buscado=actual.getValor();
 			}
@@ -97,7 +103,7 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 		ArrayList<V>dinami=new ArrayList<V>();
 		for (int i = 0; i < listaNodos.darTamano()&&!encontrado; i++) {
 			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
-			if(actual.getLlave().compareTo(llave)==0) {
+			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
 				encontrado=true;
 				while(actual!=null) {
 					buscado=actual.getValor();
@@ -119,6 +125,7 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 				encontrado=true;
 				eliminado=actual.getValor();
 				listaNodos.eliminar(actual);
+				tamanio--;
 			}
 		}
 		return eliminado;
@@ -137,6 +144,7 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 					eliminado=actual.getValor();
 					dinami.add(eliminado);
 					actual=actual.getSiguiente();
+					tamanio--;
 				}
 				listaNodos.eliminar(actual);
 			}
@@ -146,23 +154,27 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 
 	@Override
 	public Iterator<K> keys() {;
-		ArrayList<K>dinami=new ArrayList<K>();
-		for (int i = 0; i < listaNodos.darTamano(); i++) {
-			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
-			dinami.add(actual.getLlave());
-		}
-		return dinami.iterator();
+	ArrayList<K>dinami=new ArrayList<K>();
+	for (int i = 0; i < listaNodos.darTamano(); i++) {
+		NodoHash<K,V>actual=listaNodos.darElementoPos(i);
+		dinami.add(actual.getLlave());
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + capacidad;
-		return result;
+	return dinami.iterator();
 	}
 
 
+
+
+	public int hashCode(K param) {
+		int hashCode = param.hashCode(); 
+		int index = (hashCode& 0x7fffffff) % capacidad; 
+		return index; 
+	}
+
+
+	public int darCapacidad() {
+		return capacidad;
+	}
 
 
 }

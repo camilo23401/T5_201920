@@ -58,6 +58,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 	public void agregarPos( T dato,int pos )
 	{
 		elementos[pos]=dato;
+		tamanoAct++;
 	}
 	
 
@@ -67,6 +68,9 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 
 	public int darTamano() {
 		return tamanoAct;
+	}
+	public void setTamanio(int tamanio) {
+		tamanoAct=tamanio;
 	}
 /*	public void shellSort() 
 	{ 
@@ -95,7 +99,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 	public boolean contains(T elemento) {
 		boolean contiene=false;
 		for(int i=0;i<elementos.length&&!contiene;i++) {
-			if(elementos[i].compareTo(elemento)==0) {
+			if(elementos[i]!=null&&elementos[i].compareTo(elemento)==0) {
 				contiene=true;
 			}
 		}
@@ -105,7 +109,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 		T elemento1=null;
 		boolean contiene=false;
 		for(int i=0;i<elementos.length&&!contiene;i++) {
-			if(elementos[i].compareTo(elemento1)==0) {
+			if(elementos[i]!=null&&elementos[i].compareTo(elemento)==0) {
 				contiene=true;
 				elemento1=elementos[i];
 			}
@@ -125,7 +129,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 		T elemento1=null;
 		boolean contiene=false;
 		for(int i=0;i<elementos.length&&!contiene;i++) {
-			if(elementos[i].compareTo(elemento1)==0) {
+			if(elementos[i]!=null&&elementos[i].compareTo(elemento1)==0) {
 				contiene=true;
 				elemento1=elementos[i];
 				elementos[i]=null;

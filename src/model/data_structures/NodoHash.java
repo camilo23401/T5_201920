@@ -44,5 +44,6 @@ public class NodoHash<K,V> implements Comparable <NodoHash<K,V>> {
 			return 1;
 		}
 	} 
+
 	
 }
