@@ -4,5 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="D:/Estructuras de datos/Taller 5/T5_201920/lib/opencsv-4.6.jar"/>
+	<classpathentry kind="lib" path="D:/Estructuras de datos/Taller 5/T5_201920/lib/univocity-parsers-2.8.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

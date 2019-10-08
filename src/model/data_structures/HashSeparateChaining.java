@@ -20,7 +20,6 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 		tamanio=0;
 	} 
 
-	@Override
 	public void put(K llave, V valor) {
 		NodoHash<K,V>agregado=new NodoHash<K,V>(llave,valor);
 		if(tamanio>=1&&listaNodos.contains(agregado)) {
