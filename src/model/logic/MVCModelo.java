@@ -17,7 +17,6 @@ public class MVCModelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private IArregloDinamico datos;
 	private String llave;
 	private double value;
 	private TablaHashLineal<String, Double> tablaLineal;
@@ -28,7 +27,7 @@ public class MVCModelo {
 	 */
 	public MVCModelo()
 	{
-
+		tablaChaining=new HashSeparateChaining<String, Double>(20000000);
 	}
 
 	/**
@@ -41,80 +40,48 @@ public class MVCModelo {
 		value = 0.0;
 	}
 
-	/**
-	 * Servicio de consulta de numero de elementos presentes en el modelo 
-	 * @return numero de elementos presentes en el modelo
-	 */
-	public int darTamano()
-	{
-		return datos.darTamano();
-	}
 
-	/**
-	 * Requerimiento de agregar dato
-	 * @param dato
-	 */
-	public void agregar(String dato)
-	{	
-		datos.agregar(dato);
-	}
+	public TravelTime[] cargarDatos(int i) throws Exception
+	{
 
-	/**
-	 * Requerimiento buscar dato
-	 * @param dato Dato a buscar
-	 * @return dato encontrado
-	 */
-	public String buscar(String dato)
-	{
-		return datos.buscar(dato);
-	}
-
-	/**
-	 * Requerimiento eliminar dato
-	 * @param dato Dato a eliminar
-	 * @return dato eliminado
-	 */
-	public String eliminar(String dato)
-	{
-		return datos.eliminar(dato);
-	}
-	public TravelTime[] cargarDatos() throws Exception
-	{
 		TravelTime[] rta = new TravelTime[2];
 		int contador = 0;
 		TravelTime primero = null;
-		TravelTime ultimo = null;
-		for(int i = 1;i<5;i++)
+		TravelTime ultimo = null;		
+		Short trimestre = (short) i;
+		String ruta = "data/bogota-cadastral-2018-"+i+"-WeeklyAggregate.csv";
+		int valorAntes=tablaChaining.size();
+		CSVReader lector = new CSVReader(new FileReader(ruta)); 
+		String [] siguiente;
+
+		while ((siguiente = lector.readNext()) != null) 
 		{
-			Short trimestre = (short) i;
-			String ruta = "data/bogota-cadastral-2018-"+i+"-WeeklyAggregate.csv";
-			CSVReader lector = new CSVReader(new FileReader(ruta)); 
-			String [] siguiente;
-			while ((siguiente = lector.readNext()) != null) 
+			if(contador!=0)
 			{
-				if(contador!=0)
+				if(contador==1)
 				{
-					if(contador==1)
-					{
-						TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
-						llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
-						value = Double.parseDouble(siguiente[3]);
-				     	//tablaLineal.put(llave, value);
-						//tablaChaining.put(llave, value);
-						primero = viaje;	
-					}
-					TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));
+					TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
 					llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 					value = Double.parseDouble(siguiente[3]);
-					//tablaLineal.put(llave, value);
-					//tablaChaining.put(llave, value);
-					ultimo = viaje;
+
+					tablaChaining.putInSet(llave, value);
+
+					primero = viaje;	
 				}
-				contador++;
+
+				TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));
+				llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
+				value = Double.parseDouble(siguiente[3]);
+				tablaChaining.putInSet(llave, value);
+				ultimo = viaje;
+
+
 			}
-			lector.close();
-			contador = 0;
+			contador++;
 		}
+
+		lector.close();
+		System.out.println("Total de viajes leidos para el trimestre "+i+" : "+(tablaChaining.size()-valorAntes));
 		rta[0] = primero;
 		rta[1] = ultimo;
 		return rta;

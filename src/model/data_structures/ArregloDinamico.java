@@ -29,7 +29,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 	{
 		elementos = newArray(max);
 		tamanoMax = max;
-		tamanoAct = 0;
+		tamanoAct = max;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -54,13 +54,13 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 		elementos[tamanoAct] = dato;
 		tamanoAct++;
 	}
-	
+
 	public void agregarPos( T dato,int pos )
 	{
 		elementos[pos]=dato;
 		tamanoAct++;
 	}
-	
+
 
 	public int darCapacidad() {
 		return tamanoMax;
@@ -72,7 +72,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 	public void setTamanio(int tamanio) {
 		tamanoAct=tamanio;
 	}
-/*	public void shellSort() 
+	/*	public void shellSort() 
 	{ 
 		int n = tamanoAct; 
 
@@ -91,19 +91,18 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 		} 
 
 	}
-	*/
+	 */
 	public T darElementoPos(int i) {
 
 		return elementos[i];
 	}
-	public boolean contains(T elemento) {
+	public boolean contains(int pos) {
 		boolean contiene=false;
-		for(int i=0;i<elementos.length&&!contiene;i++) {
-			if(elementos[i]!=null&&elementos[i].compareTo(elemento)==0) {
-				contiene=true;
-			}
+		if(elementos[pos]!=null) {
+			contiene=true;
 		}
 		return contiene;
+
 	}
 	public T darElemento(T elemento) {
 		T elemento1=null;
@@ -116,7 +115,9 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 		}
 		return elemento1;
 	}
-	
+
+
+
 	public Iterator<T>iterador(){
 		ArrayList<T>ite=new ArrayList<T>();
 		for(int i=0;i<elementos.length;i++) {
@@ -124,18 +125,19 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 		}
 		return ite.iterator();
 	}
-	
+
 	public T eliminar(T elemento) {
 		T elemento1=null;
 		boolean contiene=false;
 		for(int i=0;i<elementos.length&&!contiene;i++) {
-			if(elementos[i]!=null&&elementos[i].compareTo(elemento1)==0) {
+			if(elementos[i]!=null&&elementos[i].compareTo(elemento)==0) {
 				contiene=true;
 				elemento1=elementos[i];
 				elementos[i]=null;
+				tamanoAct--;
 			}
 		}
 		return elemento1;
 	}
-	
+
 }

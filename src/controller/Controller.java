@@ -39,12 +39,12 @@ public class Controller {
 				case 1:
 					try
 					{
-						TravelTime[] primeroYSegundo = modelo.cargarDatos();
+						for(int j=1;j<5;j++) {
+						TravelTime[] primeroYSegundo = modelo.cargarDatos(j);
 						System.out.println("Cargó datos");
 						for(int i=0; i<primeroYSegundo.length;i++)
 						{
 							TravelTime actual = primeroYSegundo[i];
-							System.out.println();
 							if(i == 0)
 							{
 								System.out.println("PRIMER VIAJE");	
@@ -59,6 +59,7 @@ public class Controller {
 							System.out.println("Día de la semana: "+ actual.darDow());
 							System.out.println("Tiempo promedio en viaje: "+actual.darMeanTravelTime());
 							System.out.println("------------------------");
+						}
 						}
 					}
 					catch(Exception e)

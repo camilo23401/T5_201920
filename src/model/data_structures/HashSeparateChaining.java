@@ -1,6 +1,5 @@
 package model.data_structures;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTable<K,V>{
@@ -22,16 +21,15 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 
 	public void put(K llave, V valor) {
 		NodoHash<K,V>agregado=new NodoHash<K,V>(llave,valor);
-		if(tamanio>=1&&listaNodos.contains(agregado)) {
-			NodoHash<K,V>cambiar=listaNodos.darElemento(agregado);
+		if(tamanio>=1&&listaNodos.contains(hashCode(agregado.getLlave()))) {
+			NodoHash<K,V>cambiar=listaNodos.darElementoPos(hashCode(agregado.getLlave()));
 			cambiar.setValor(valor);
 		}
 		else {
 			tamanio++;
 			int pos = hashCode(agregado.getLlave());	
-			System.out.println(pos);
 			listaNodos.agregarPos(agregado, pos);
-			if ((1.0*tamanio)/capacidad >= 0.75) 
+			if ((1.0*tamanio)/capacidad >= 0.5) 
 			{ 
 				ArregloDinamico<NodoHash<K, V>> temp = listaNodos; 
 				capacidad = 2 * capacidad; 
@@ -52,17 +50,19 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	@Override
 	public void putInSet(K llave, V valor) {
 		NodoHash<K,V>agregado=new NodoHash<K,V>(llave,valor);
-		if(listaNodos.contains(agregado)) {
-			NodoHash<K,V>cambiar=listaNodos.darElemento(agregado);
+		if(tamanio>0&&listaNodos.contains(hashCode(llave))) {
+			NodoHash<K,V>cambiar=listaNodos.darElementoPos(hashCode(llave));
+			while(cambiar.getSiguiente()!=null){
+				cambiar=cambiar.getSiguiente();
+			}
 			cambiar.setSiguiente(agregado);
 			tamanio++;
 		}
 		else {
 			tamanio++;
-			int pos = hashCode(agregado.getLlave());	
+			int pos = hashCode(agregado.getLlave());
 			listaNodos.agregarPos(agregado, pos);
-
-			if ((1.0*tamanio)/capacidad >= 0.75) 
+			if ((1.0*tamanio)/capacidad >= 0.5) 
 			{ 
 				ArregloDinamico<NodoHash<K, V>> temp = listaNodos; 
 				capacidad = 2 * capacidad; 
@@ -85,8 +85,8 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	public V get(K llave) {
 		boolean encontrado=false;
 		V buscado=null;
-		for (int i = 0; i < listaNodos.darTamano()&&!encontrado; i++) {
-			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
+		for (int i = 0; i < listaNodos.darCapacidad()&&!encontrado; i++) {
+			NodoHash<K,V>actual=listaNodos.darElementoPos(i);	
 			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
 				encontrado=true;
 				buscado=actual.getValor();
@@ -99,14 +99,14 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	public Iterator<V> getSet(K llave) {
 		boolean encontrado=false;
 		V buscado=null;
-		ArrayList<V>dinami=new ArrayList<V>();
-		for (int i = 0; i < listaNodos.darTamano()&&!encontrado; i++) {
+		Stack<V>dinami=new Stack<V>();
+		for (int i = 0; i < listaNodos.darCapacidad()&&!encontrado; i++) {
 			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
 			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
 				encontrado=true;
 				while(actual!=null) {
 					buscado=actual.getValor();
-					dinami.add(buscado);
+					dinami.push(buscado);
 					actual=actual.getSiguiente();
 				}
 			}
@@ -118,9 +118,9 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	public V delete(K llave) {
 		boolean encontrado=false;
 		V eliminado=null;
-		for (int i = 0; i < listaNodos.darTamano()&&!encontrado; i++) {
+		for (int i = 0; i < listaNodos.darCapacidad()&&!encontrado; i++) {
 			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
-			if(actual.getLlave().compareTo(llave)==0) {
+			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
 				encontrado=true;
 				eliminado=actual.getValor();
 				listaNodos.eliminar(actual);
@@ -134,18 +134,20 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	public Iterator<V> deleteSet(K llave) {
 		boolean encontrado=false;
 		V eliminado=null;
-		ArrayList<V>dinami=new ArrayList<V>();
+		Stack<V>dinami=new Stack<V>();
 		for (int i = 0; i < listaNodos.darTamano()&&!encontrado; i++) {
 			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
-			if(actual.getLlave().compareTo(llave)==0) {
+			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
 				encontrado=true;
-				while(actual!=null) {
+				while(actual.getSiguiente()!=null) {
 					eliminado=actual.getValor();
-					dinami.add(eliminado);
+					dinami.push(eliminado);;
 					actual=actual.getSiguiente();
 					tamanio--;
 				}
+				dinami.push(actual.getValor());;;
 				listaNodos.eliminar(actual);
+				tamanio--;
 			}
 		}
 		return dinami.iterator();
@@ -153,10 +155,11 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 
 	@Override
 	public Iterator<K> keys() {;
-	ArrayList<K>dinami=new ArrayList<K>();
-	for (int i = 0; i < listaNodos.darTamano(); i++) {
+	Stack<K>dinami=new Stack<K>();
+	for (int i = 0; i < listaNodos.darCapacidad(); i++) {
 		NodoHash<K,V>actual=listaNodos.darElementoPos(i);
-		dinami.add(actual.getLlave());
+		if(actual!=null)
+			dinami.push(actual.getLlave());;
 	}
 	return dinami.iterator();
 	}
