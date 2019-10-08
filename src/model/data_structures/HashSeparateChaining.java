@@ -19,7 +19,6 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 		listaNodos=new ArregloDinamico<NodoHash<K,V>>(n);
 	} 
 
-	@Override
 	public void put(K llave, V valor) {
 		NodoHash<K,V>agregado=new NodoHash<K,V>(llave,valor);
 		if(listaNodos.contains(agregado)) {
