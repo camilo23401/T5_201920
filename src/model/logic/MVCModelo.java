@@ -70,7 +70,7 @@ public class MVCModelo {
 					llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 					value = Double.parseDouble(siguiente[3]);
                     tablaLineal.put(llave, viaje);
-					//tablaChaining.putInSet(llave, viaje);
+					tablaChaining.putInSet(llave, viaje);
 					primero = viaje;	
 				}
 
@@ -78,7 +78,7 @@ public class MVCModelo {
 				llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 				value = Double.parseDouble(siguiente[3]);
 				tablaLineal.put(llave, viaje);
-				//tablaChaining.putInSet(llave, viaje);
+				tablaChaining.putInSet(llave, viaje);
 				ultimo = viaje;
 
 
