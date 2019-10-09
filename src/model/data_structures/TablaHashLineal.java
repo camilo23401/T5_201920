@@ -18,26 +18,30 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 	}
 	public void put(K llave, V valor) 
 	{
-
-		NodoHash<K, V> nodoActual = new NodoHash<K,V>(null, null);
-		if((double)tamanio/(double)capacidad >= 0.75)
+		if(llave!=null&&!llave.toString().equals(""))
 		{
-			agrandar();
-		}
-		int i;
-		for(i = hash(llave);listaNodos.darElementoPos(i)!=null;i=(i+1)%capacidad)
-		{
-			nodoActual = listaNodos.darElementoPos(i);
-			if(nodoActual.getLlave().equals(llave))
+			NodoHash<K, V> nodoActual = new NodoHash<K,V>(null, null);
+			if((double)tamanio/(double)capacidad >= 0.75)
 			{
-				nodoActual.setValor(valor);
-				System.out.println("Lo va a quebraaar");
-				return;
+				agrandar();
 			}
+			int i;
+			for(i = hash(llave);listaNodos.darElementoPos(i)!=null;i=(i+1)%capacidad)
+			{
+				nodoActual = listaNodos.darElementoPos(i);
+				if(nodoActual.getLlave().equals(llave))
+				{
+					nodoActual.setValor(valor);
+					tamanio++;
+					return;
+				}
+			}
+			nodoActual.setLlave(llave);
+			nodoActual.setValor(valor);
+			listaNodos.agregarPos(nodoActual, i);
+			tamanio++;
+
 		}
-		nodoActual.setLlave(llave);
-		nodoActual.setValor(valor);
-		tamanio++;
 	}
 
 	public void putInSet(K llave, V valor) 
@@ -57,15 +61,20 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 
 	public V get(K llave) 
 	{
-		for(int i = hash(llave); listaNodos.darElementoPos(i)!=null; i = (i+1)%capacidad)
+		V rta = null;
+		if(llave!=null)
 		{
-			NodoHash<K, V> elemento = listaNodos.darElementoPos(i);
-			if(elemento.getLlave().equals(llave))
+			for(int i = hash(llave); listaNodos.darElementoPos(i)!=null; i = (i+1)%capacidad)
 			{
-				return elemento.getValor();
-			}
+				NodoHash<K, V> elemento = listaNodos.darElementoPos(i);
+				if(elemento.getLlave().equals(llave))
+				{
+					rta = elemento.getValor();
+				}
+			}	
 		}
-		return null;
+		return rta;
+		
 	}
 
 	public Iterator<V> getSet(K llave) 

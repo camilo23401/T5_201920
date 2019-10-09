@@ -31,9 +31,11 @@ public class TestLinearProbing
 	public void testPut() {
 		tabla.put("Camilo", 2);
 		tabla.put("Nestor", 4);
+		tabla.put("Daniel", 3);
 		tabla.put("NicolEt", 4);
-		tabla.put("Daniel", 4);
-		tabla.put("Daniel", 8);
+		tabla.put("Majo", 3);
+		tabla.put("", 7);
+		tabla.put(null, 4);
 		assertEquals(5, tabla.size());
 
 
@@ -87,7 +89,7 @@ public void testPutIn() {
 		valor=ite.next();
 		assertEquals(4,valor);
 	}
-	*/
+	 */
 	@Test
 	public void delete() {
 		tabla.put("Camilo", 2);
@@ -127,7 +129,7 @@ public void testPutIn() {
 		valor=ite.next();
 		assertEquals(4,valor);
 	}
-	*/
+	 */
 	@Test
 	public void keys() {
 		tabla.putInSet("Camilo", 2);

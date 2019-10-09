@@ -52,7 +52,8 @@ public class MVCModelo {
 		TravelTime ultimo = null;		
 		Short trimestre = (short) i;
 		String ruta = "data/bogota-cadastral-2018-"+i+"-WeeklyAggregate.csv";
-		int valorAntes=tablaChaining.size();
+		int valorAntesChaining = tablaChaining.size();
+		int valorAntesLineal = tablaLineal.size();
 		CSVReader lector = new CSVReader(new FileReader(ruta)); 
 		String [] siguiente;
 
@@ -84,7 +85,9 @@ public class MVCModelo {
 		}
 
 		lector.close();
-		System.out.println("Total de viajes leidos para el trimestre "+i+" : "+(tablaChaining.size()-valorAntes));
+		System.out.println("Total de viajes leidos para el trimestre "+i+" utilizando linear probing : "+(tablaLineal.size()-valorAntesLineal));
+		System.out.println("Total de viajes leidos para el trimestre "+i+" utilizando separate chaining : "+(tablaChaining.size()-valorAntesChaining));
+		
 		rta[0] = primero;
 		rta[1] = ultimo;
 		return rta;
