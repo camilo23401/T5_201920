@@ -18,31 +18,26 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 	}
 	public void put(K llave, V valor) 
 	{
-		if(llave==null)
-		{
-			return; //Error
-		}
-		if(valor == null)
-		{
-			delete(llave);
-			return;
-		}
-		if(tamanio>=capacidad/2)
+
+		NodoHash<K, V> nodoActual = new NodoHash<K,V>(null, null);
+		if((double)tamanio/(double)capacidad >= 0.75)
 		{
 			agrandar();
 		}
-		for(int i = hash(llave);listaNodos.darElementoPos(i)!=null; i = (i+1)%capacidad)
+		int i;
+		for(i = hash(llave);listaNodos.darElementoPos(i)!=null;i=(i+1)%capacidad)
 		{
-			NodoHash<K, V> elemento = listaNodos.darElementoPos(i);
-			if(elemento.getLlave().equals(llave))
+			nodoActual = listaNodos.darElementoPos(i);
+			if(nodoActual.getLlave().equals(llave))
 			{
-				elemento.setValor(valor);
+				nodoActual.setValor(valor);
+				System.out.println("Lo va a quebraaar");
 				return;
 			}
-			elemento.setLlave(llave);
-			elemento.setValor(valor);
-			tamanio++;
 		}
+		nodoActual.setLlave(llave);
+		nodoActual.setValor(valor);
+		tamanio++;
 	}
 
 	public void putInSet(K llave, V valor) 
@@ -55,27 +50,22 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 		}
 		else
 		{
-			
+
 		}
 
 	}
 
 	public V get(K llave) 
 	{
-		V objeto = null;
-		if(llave == null)
-		{
-			return objeto;
-		}
 		for(int i = hash(llave); listaNodos.darElementoPos(i)!=null; i = (i+1)%capacidad)
 		{
 			NodoHash<K, V> elemento = listaNodos.darElementoPos(i);
 			if(elemento.getLlave().equals(llave))
 			{
-				objeto = elemento.getValor();
+				return elemento.getValor();
 			}
 		}
-		return objeto;
+		return null;
 	}
 
 	public Iterator<V> getSet(K llave) 
@@ -119,11 +109,14 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 
 	public Iterator<K> keys() 
 	{
-		ArrayList<K> llaves = new ArrayList<K>();
+		Stack<K> llaves = new Stack<K>();
 		for(int i=0;i<capacidad;i++)
 		{
 			NodoHash<K, V> elemento = listaNodos.darElementoPos(i);
-			llaves.add(elemento.getLlave());
+			if(elemento!=null)
+			{
+				llaves.push(elemento.getLlave());	
+			}
 		}
 		return llaves.iterator();
 	}
@@ -168,15 +161,19 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 	{
 		int i = pNum;
 		i = (i + 1) % capacidad;
-        while (listaNodos != null) {
-         
-            NodoHash<K, V> paraReHash = listaNodos.darElementoPos(i);
-            put(paraReHash.getLlave(), paraReHash.getValor());
-            paraReHash = null;
-            tamanio--;
-            i = (i + 1) % capacidad;
-        }
-        tamanio--;
+		while (listaNodos != null) {
+
+			NodoHash<K, V> paraReHash = listaNodos.darElementoPos(i);
+			put(paraReHash.getLlave(), paraReHash.getValor());
+			paraReHash = null;
+			tamanio--;
+			i = (i + 1) % capacidad;
+		}
+		tamanio--;
+	}
+	public int darCapacidad()
+	{
+		return capacidad;
 	}
 
 }

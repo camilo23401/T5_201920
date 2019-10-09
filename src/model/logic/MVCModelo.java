@@ -20,7 +20,7 @@ public class MVCModelo {
 	 */
 	private String llave;
 	private double value;
-	private TablaHashLineal<String, Double> tablaLineal;
+	private TablaHashLineal<String, TravelTime> tablaLineal;
 	private HashSeparateChaining<String, TravelTime> tablaChaining;
 
 	/**
@@ -29,6 +29,7 @@ public class MVCModelo {
 	public MVCModelo()
 	{
 		tablaChaining=new HashSeparateChaining<String, TravelTime>(20000000);
+		tablaLineal = new TablaHashLineal<String, TravelTime>(20000000);
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class MVCModelo {
 					TravelTime viaje = new TravelTime(trimestre,Short.parseShort(siguiente[0]), Short.parseShort(siguiente[1]), Short.parseShort(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
 					llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 					value = Double.parseDouble(siguiente[3]);
-
+                    tablaLineal.put(llave, viaje);
 					tablaChaining.putInSet(llave, viaje);
 
 					primero = viaje;	
@@ -73,6 +74,7 @@ public class MVCModelo {
 				TravelTime viaje = new TravelTime(trimestre,Short.parseShort(siguiente[0]), Short.parseShort(siguiente[1]), Short.parseShort(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
 				llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 				value = Double.parseDouble(siguiente[3]);
+				tablaLineal.put(llave, viaje);
 				tablaChaining.putInSet(llave, viaje);
 				ultimo = viaje;
 
