@@ -10,6 +10,7 @@ import model.data_structures.ArregloDinamico;
 import model.data_structures.HashLinearProbing;
 import model.data_structures.HashSeparateChaining;
 import model.data_structures.IArregloDinamico;
+import model.data_structures.Stack;
 import model.data_structures.TablaHashLineal;
 
 /**
@@ -70,7 +71,6 @@ public class MVCModelo {
 					value = Double.parseDouble(siguiente[3]);
                     tablaLineal.put(llave, viaje);
 					//tablaChaining.putInSet(llave, viaje);
-
 					primero = viaje;	
 				}
 
@@ -93,6 +93,16 @@ public class MVCModelo {
 		rta[0] = primero;
 		rta[1] = ultimo;
 		return rta;
+	}
+	public ArregloDinamico<TravelTime> consultaLinear(String llave) {
+		Stack<TravelTime> recuperados = tablaLineal.valoresDeLlaves(llave);
+		ArregloDinamico<TravelTime>retorno=new ArregloDinamico<TravelTime>(200000);
+		for(int i = 0; i < recuperados.darTamanio();i++)
+		{
+			retorno.agregar(recuperados.pop());
+		}
+		retorno.shellSort();
+		return retorno;
 	}
 	
 	public ArregloDinamico<TravelTime> consultaChaining(String llave) {
@@ -149,4 +159,42 @@ public class MVCModelo {
 		}
 		return retorno;
 	}
+	public String[] pruebasLinearProbing() {
+		long start1 = System.currentTimeMillis();
+	 
+		String retorno[];   
+		retorno = new String[3];
+		for(int i=0;i<8000;i++) {
+			Random r = new Random();
+			int pos =r.nextInt(tablaLineal.size());
+			tablaLineal.getPos(pos);
+			
+		}
+		
+		long end1 = System.currentTimeMillis();
+		double t1 =(end1 - start1) / 1000F;
+		String buscar="Hola";
+		long start2 = System.currentTimeMillis();
+		for(int i=0;i<8000;i++) {
+			tablaLineal.get(buscar);
+			
+		}
+		long end2 = System.currentTimeMillis();
+		double t2 =  ((end2 - start2) / 1000F);
+		if(t1>t2) {
+			retorno[0]=Double.toString(t1);
+			retorno[1]=Double.toString(t2);
+			retorno[2]=Double.toString(t1-t2);
+			
+		}
+	
+		else if (t2>t1) {
+			retorno[0]=Double.toString(t2);
+			retorno[1]=Double.toString(t1);
+			retorno[2]=Double.toString(t2-t1);
+		
+		}
+		return retorno;
+	}
+
 }

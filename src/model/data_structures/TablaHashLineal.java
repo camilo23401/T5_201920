@@ -3,7 +3,7 @@ package model.data_structures;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,V>
+public class TablaHashLineal <K extends Comparable<K>,V> 
 {
 
 	private int tamanio = 0;
@@ -45,32 +45,6 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 
 		}
 	}
-
-	public void putInSet(K llave, V valor) 
-	{
-		NodoHash<K, V> nodoActual = new NodoHash<K,V>(null, null);
-		if((double)tamanio/(double)capacidad >= 0.75)
-		{
-			agrandar();
-		}
-		int i;
-		for(i = hash(llave);listaNodos.darElementoPos(i)!=null;i=(i+1)%capacidad)
-		{
-			nodoActual = listaNodos.darElementoPos(i);
-			if(nodoActual.getLlave().equals(llave))
-			{
-				nodoActual.setValor(valor);
-				listaNodos.agregarPos(nodoActual, i+1);
-				tamanio++;
-				return;
-			}
-		}
-		nodoActual.setLlave(llave);
-		nodoActual.setValor(valor);
-		listaNodos.agregarPos(nodoActual, i);
-		tamanio++;
-	}
-
 	public V get(K llave) 
 	{
 		V rta = null;
@@ -88,12 +62,6 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 		return rta;
 
 	}
-
-	public Iterator<V> getSet(K llave) 
-	{
-		return null;
-	}
-
 	public V delete(K llave) 
 	{
 		if(llave==null)
@@ -121,12 +89,6 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 		rehash(numParaRehash);
 		return porEliminar.getValor();
 	}
-
-	public Iterator<V> deleteSet(K llave) 
-	{
-		return null;
-	}
-
 	public Iterator<K> keys() 
 	{
 		Stack<K> llaves = new Stack<K>();
@@ -140,6 +102,7 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 		}
 		return llaves.iterator();
 	}
+
 	public int size()
 	{
 		return tamanio;
@@ -218,5 +181,27 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 	{
 		return contadorRehash;
 	}
-
+	public Stack<V> valoresDeLlaves (K pLlave)
+	{
+		Stack<V> values = new Stack<V>();
+		for(int i=0;i<listaNodos.darCapacidad();i++)
+		{
+			NodoHash<K, V> elemento = listaNodos.darElementoPos(i);
+			if(elemento!=null)
+			{
+				if(elemento.getLlave().equals(pLlave))
+				{
+					values.push(elemento.getValor());	
+				}
+			}
+		}
+		return values;
+	}
+	public V getPos(int pos) {
+		V retorno=null;
+		if(listaNodos.darElementoPos(pos)!=null) {
+			retorno= listaNodos.darElementoPos(pos).getValor();
+		}
+		return retorno;
+	}
 }
