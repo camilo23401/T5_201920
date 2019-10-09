@@ -50,8 +50,6 @@ public void testPutIn() {
 	tabla.putInSet("Daniel", 4);
 	tabla.putInSet("Daniel", 8);
 	assertEquals(5, tabla.size());
-
-
 }
 	*/
 	@Test
@@ -148,7 +146,7 @@ public void testPutIn() {
 		String valor=ite.next();
 		assertEquals("NicolEt",valor);
 		valor=ite.next();
-		assertEquals("Nestor",valor);              //NO DEBERIA IR PRIMERO NESTOR? JMMM
+		assertEquals("Nestor",valor);              
 		valor=ite.next();
 		assertEquals("Daniel",valor);
 		valor=ite.next();

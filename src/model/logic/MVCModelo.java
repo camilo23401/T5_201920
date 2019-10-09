@@ -6,6 +6,7 @@ import java.util.Iterator;
 import com.opencsv.CSVReader;
 
 import model.data_structures.ArregloDinamico;
+import model.data_structures.HashLinearProbing;
 import model.data_structures.HashSeparateChaining;
 import model.data_structures.IArregloDinamico;
 import model.data_structures.TablaHashLineal;
@@ -67,7 +68,7 @@ public class MVCModelo {
 					llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 					value = Double.parseDouble(siguiente[3]);
                     tablaLineal.put(llave, viaje);
-					tablaChaining.putInSet(llave, viaje);
+					//tablaChaining.putInSet(llave, viaje);
 
 					primero = viaje;	
 				}
@@ -76,7 +77,7 @@ public class MVCModelo {
 				llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 				value = Double.parseDouble(siguiente[3]);
 				tablaLineal.put(llave, viaje);
-				tablaChaining.putInSet(llave, viaje);
+				//tablaChaining.putInSet(llave, viaje);
 				ultimo = viaje;
 
 
@@ -101,5 +102,13 @@ public class MVCModelo {
 		}
 		retorno.shellSort();
 		return retorno;
+	}
+	public void tabla()
+	{
+		System.out.println(tablaLineal.numeroDuplas());
+		System.out.println(20000000);
+		System.out.println(tablaLineal.numFinal());
+		System.out.println(tablaLineal.factorCargaFinal());
+		System.out.println(tablaLineal.darContadorRehash());
 	}
 }

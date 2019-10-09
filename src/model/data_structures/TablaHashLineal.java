@@ -8,6 +8,7 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 
 	private int tamanio = 0;
 	private int capacidad = 0;
+	private int contadorRehash = 0;
 	private ArregloDinamico<NodoHash<K, V>> listaNodos;
 
 
@@ -47,17 +48,27 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 
 	public void putInSet(K llave, V valor) 
 	{
-		if(get(llave)==null)
+		NodoHash<K, V> nodoActual = new NodoHash<K,V>(null, null);
+		if((double)tamanio/(double)capacidad >= 0.75)
 		{
-			NodoHash<K, V> paraAgregar = new NodoHash<K, V>(llave, valor);
-			ArregloDinamico<NodoHash<K, V>> setValue = new ArregloDinamico<NodoHash<K,V>>(2);
-			setValue.agregar(paraAgregar);
+			agrandar();
 		}
-		else
+		int i;
+		for(i = hash(llave);listaNodos.darElementoPos(i)!=null;i=(i+1)%capacidad)
 		{
-
+			nodoActual = listaNodos.darElementoPos(i);
+			if(nodoActual.getLlave().equals(llave))
+			{
+				nodoActual.setValor(valor);
+				listaNodos.agregarPos(nodoActual, i+1);
+				tamanio++;
+				return;
+			}
 		}
-
+		nodoActual.setLlave(llave);
+		nodoActual.setValor(valor);
+		listaNodos.agregarPos(nodoActual, i);
+		tamanio++;
 	}
 
 	public V get(K llave) 
@@ -75,7 +86,7 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 			}	
 		}
 		return rta;
-		
+
 	}
 
 	public Iterator<V> getSet(K llave) 
@@ -141,14 +152,17 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 	{
 		ArregloDinamico<NodoHash<K, V>> temp = listaNodos; 
 		capacidad = 2 * capacidad; 
-		listaNodos = new ArregloDinamico<>(capacidad);         
-		tamanio = 0; 
-		for (int i = 0; i < capacidad; i++) 
-			listaNodos.agregarPos(null,i); 
+		listaNodos = new ArregloDinamico<>(capacidad);  
+		tamanio=0;
+		for(int i=0;i<temp.darCapacidad();i++) {
+			NodoHash<K,V>actual=temp.darElementoPos(i);				
+			while(actual!=null) {
+				put(actual.getLlave(),actual.getValor());
+				actual=actual.getSiguiente();
+			}
 
-		for(int i=0;i<temp.darTamano();i++) {
-			listaNodos.agregarPos(temp.darElementoPos(i),i);
-		}
+		} 
+
 	}
 	public boolean perteneceATabla(K llave)
 	{
@@ -181,10 +195,28 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 			}
 		}
 		tamanio--;
+		contadorRehash++;
 	}
 	public int darCapacidad()
 	{
 		return capacidad;
+	}
+
+	public double factorCargaFinal()
+	{
+		return (double)tamanio/(double)capacidad;
+	}
+	public int numeroDuplas()
+	{
+		return tamanio;
+	}
+	public int numFinal()
+	{
+		return capacidad;
+	}
+	public int darContadorRehash()
+	{
+		return contadorRehash;
 	}
 
 }
