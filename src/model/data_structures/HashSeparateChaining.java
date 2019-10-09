@@ -84,31 +84,38 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	@Override
 	public V get(K llave) {
 		boolean encontrado=false;
+		int pos=hashCode(llave);
 		V buscado=null;
-		for (int i = 0; i < listaNodos.darCapacidad()&&!encontrado; i++) {
-			NodoHash<K,V>actual=listaNodos.darElementoPos(i);	
-			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
-				encontrado=true;
-				buscado=actual.getValor();
-			}
+		NodoHash<K,V>actual=listaNodos.darElementoPos(pos);	
+		if(actual!=null&&actual.getLlave().compareTo(llave)==0&&!encontrado) {
+			encontrado=true;
+			buscado=actual.getValor();
 		}
 		return buscado;
 	}
 
+
+
+	public V getPos(int pos) {
+		V retorno=null;
+		if(listaNodos.darElementoPos(pos)!=null) {
+			retorno= listaNodos.darElementoPos(pos).getValor();
+		}
+		return retorno;
+	}
+
+
 	@Override
 	public Iterator<V> getSet(K llave) {
-		boolean encontrado=false;
+		int pos=hashCode(llave);
 		V buscado=null;
 		Stack<V>dinami=new Stack<V>();
-		for (int i = 0; i < listaNodos.darCapacidad()&&!encontrado; i++) {
-			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
-			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
-				encontrado=true;
-				while(actual!=null) {
-					buscado=actual.getValor();
-					dinami.push(buscado);
-					actual=actual.getSiguiente();
-				}
+		NodoHash<K,V>actual=listaNodos.darElementoPos(pos);
+		if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
+			while(actual!=null) {
+				buscado=actual.getValor();
+				dinami.push(buscado);
+				actual=actual.getSiguiente();
 			}
 		}
 		return dinami.iterator();
@@ -180,6 +187,7 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 	public int numDuplas() {
 		return listaNodos.darTamano();
 	}
+
 
 
 }

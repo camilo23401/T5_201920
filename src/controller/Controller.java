@@ -89,10 +89,18 @@ public class Controller {
 					}
 					break;	
 				case 4: 
+					System.out.println("Pruebas aleatorias");
+					String[]pruebas=modelo.pruebasChaining();
+					System.out.println("Tiempo Minimo :"+ pruebas[0]);
+					System.out.println("Tiempo Maximo :"+ pruebas[1]);
+					System.out.println("Tiempo Promedio :"+ pruebas[2]);
+					break;	
+				case 5: 
 					System.out.println("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;
 					break;	
+
 
 				default: 
 					System.out.println("--------- \n Opcion Invalida !! \n---------");

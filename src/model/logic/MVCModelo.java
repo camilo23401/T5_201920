@@ -2,6 +2,7 @@ package model.logic;
 
 import java.io.FileReader;
 import java.util.Iterator;
+import java.util.Random;
 
 import com.opencsv.CSVReader;
 
@@ -110,5 +111,42 @@ public class MVCModelo {
 		System.out.println(tablaLineal.numFinal());
 		System.out.println(tablaLineal.factorCargaFinal());
 		System.out.println(tablaLineal.darContadorRehash());
+	}
+	public String[] pruebasChaining() {
+		long start1 = System.currentTimeMillis();
+	 
+		String retorno[];   
+		retorno = new String[3];
+		for(int i=0;i<8000;i++) {
+			Random r = new Random();
+			int pos =r.nextInt(tablaChaining.size());
+			tablaChaining.getPos(pos);
+			
+		}
+		
+		long end1 = System.currentTimeMillis();
+		double t1 =(end1 - start1) / 1000F;
+		String buscar="Hola";
+		long start2 = System.currentTimeMillis();
+		for(int i=0;i<8000;i++) {
+			tablaChaining.getSet(buscar);
+			
+		}
+		long end2 = System.currentTimeMillis();
+		double t2 =  ((end2 - start2) / 1000F);
+		if(t1>t2) {
+			retorno[0]=Double.toString(t1);
+			retorno[1]=Double.toString(t2);
+			retorno[2]=Double.toString(t1-t2);
+			
+		}
+	
+		else if (t2>t1) {
+			retorno[0]=Double.toString(t2);
+			retorno[1]=Double.toString(t1);
+			retorno[2]=Double.toString(t2-t1);
+		
+		}
+		return retorno;
 	}
 }

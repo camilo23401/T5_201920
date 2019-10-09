@@ -145,5 +145,28 @@ public class TestSeparateChaining1 {
 		assertEquals("Nestor",valor);
 		
 	}
+	@Test
+	public void rehash() {
+		assertEquals(20,tabla.darCapacidad());
+		tabla.putInSet("Camilo", 2);
+		tabla.putInSet("Nestor", 4);
+		tabla.putInSet("NicolEt", 4);
+		tabla.putInSet("Daqqniel", 4);
+		tabla.putInSet("Daniel", 8);
+		tabla.putInSet("Dqqaniesl", 16);
+		tabla.putInSet("Daniel", 20);
+		tabla.putInSet("Daniel", 20);
+		tabla.putInSet("Dqasaniel", 20);
+		tabla.putInSet("Danqqiel", 20);
+		tabla.putInSet("qqDaniel", 20);
+		tabla.putInSet("Daaniel", 20);
+		tabla.putInSet("Daniel", 20);
+		tabla.putInSet("Dassniel", 20);
+		tabla.putInSet("Daniwsdel", 20);
+		tabla.putInSet("Daqqniel", 20);
+		tabla.putInSet("Danssiel", 20);
+		assertEquals(40,tabla.darCapacidad());
+		
+	}
 
 }
