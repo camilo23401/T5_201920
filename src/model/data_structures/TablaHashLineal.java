@@ -32,6 +32,7 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 				if(nodoActual.getLlave().equals(llave))
 				{
 					nodoActual.setValor(valor);
+					listaNodos.agregarPos(nodoActual, i+1);
 					tamanio++;
 					return;
 				}
@@ -119,12 +120,12 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 	public Iterator<K> keys() 
 	{
 		Stack<K> llaves = new Stack<K>();
-		for(int i=0;i<capacidad;i++)
+		for(int i=0;i<listaNodos.darCapacidad();i++)
 		{
 			NodoHash<K, V> elemento = listaNodos.darElementoPos(i);
 			if(elemento!=null)
 			{
-				llaves.push(elemento.getLlave());	
+				llaves.push(elemento.getLlave());
 			}
 		}
 		return llaves.iterator();
