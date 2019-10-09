@@ -96,20 +96,21 @@ public void testPutIn() {
 	 */
 	@Test
 	public void delete() {
-		tabla.put("Camilo", 2);
-		tabla.put("Nestor", 4);
-		tabla.put("NicolEt", 4);
-		tabla.put("Daniel", 4);
-		assertEquals(4, tabla.size());
-		int val=tabla.delete("Camilo");
-		assertEquals(2,val);
-		assertEquals(3, tabla.size());
-		assertNull(tabla.get("Camilo"));
-		val=tabla.delete("Nestor");
-		assertEquals(4,val);
-		assertEquals(2, tabla.size());
-		assertNull(tabla.get("Nestor"));
-
+	
+			tabla.put("Camilo", 2);
+			tabla.put("Nestor", 4);
+			tabla.put("NicolEt", 4);
+			tabla.put("Daniel", 4);
+			assertEquals(4, tabla.size());
+			int val=tabla.delete("Camilo");
+			assertEquals(2,val);
+			assertEquals(3, tabla.size());
+			assertNull(tabla.get("Camilo"));
+			val=tabla.delete("Nestor");
+			assertEquals(4,val);
+			assertEquals(2, tabla.size());
+			assertNull(tabla.get("Nestor"));
+		
 	}
 	/**
 	@Test

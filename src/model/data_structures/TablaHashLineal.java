@@ -103,12 +103,11 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 			{
 				encontrado = true;
 				porEliminar = elemento;
-				elemento.setLlave(null);
-				elemento.setValor(null);
+				listaNodos.eliminar(elemento);
 				numParaRehash = i;
 			}
-			rehash(numParaRehash);
 		}
+		rehash(numParaRehash);
 		return porEliminar.getValor();
 	}
 
@@ -171,13 +170,15 @@ public class TablaHashLineal <K extends Comparable<K>,V> implements HashTable<K,
 	{
 		int i = pNum;
 		i = (i + 1) % capacidad;
-		while (listaNodos != null) {
-
+		while (listaNodos.darElementoPos(i) != null) {
 			NodoHash<K, V> paraReHash = listaNodos.darElementoPos(i);
-			put(paraReHash.getLlave(), paraReHash.getValor());
-			paraReHash = null;
-			tamanio--;
-			i = (i + 1) % capacidad;
+			if(paraReHash!=null)
+			{
+				put(paraReHash.getLlave(), paraReHash.getValor());
+				paraReHash = null;
+				tamanio--;
+				i = (i + 1) % capacidad;	
+			}
 		}
 		tamanio--;
 	}
