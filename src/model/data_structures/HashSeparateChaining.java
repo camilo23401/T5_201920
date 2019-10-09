@@ -135,7 +135,7 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 		boolean encontrado=false;
 		V eliminado=null;
 		Stack<V>dinami=new Stack<V>();
-		for (int i = 0; i < listaNodos.darTamano()&&!encontrado; i++) {
+		for (int i = 0; i < listaNodos.darCapacidad()&&!encontrado; i++) {
 			NodoHash<K,V>actual=listaNodos.darElementoPos(i);
 			if(actual!=null&&actual.getLlave().compareTo(llave)==0) {
 				encontrado=true;
@@ -176,6 +176,9 @@ public class HashSeparateChaining<K extends Comparable<K>,V> implements HashTabl
 
 	public int darCapacidad() {
 		return capacidad;
+	}
+	public int numDuplas() {
+		return listaNodos.darTamano();
 	}
 
 

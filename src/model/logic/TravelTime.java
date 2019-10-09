@@ -3,13 +3,13 @@ package model.logic;
 public class TravelTime implements Comparable <TravelTime>
 {
 	private Short trimestre;
-	private int sourceid;
-	private int distid;
-	private int dow;
+	private Short sourceid;
+	private Short distid;
+	private Short dow;
 	private double mean_travel_time;
 	private double standard_deviation_travel_time;
 
-	public TravelTime (Short pTrimestre, int pSourceid, int pDistid, int pDow, Double pMean_time, double pStandard_deviation)
+	public TravelTime (Short pTrimestre, Short pSourceid, Short pDistid, Short pDow, Double pMean_time, double pStandard_deviation)
 	{
 		trimestre = pTrimestre;
 		sourceid= pSourceid;
@@ -18,19 +18,19 @@ public class TravelTime implements Comparable <TravelTime>
 		mean_travel_time = pMean_time;
 		standard_deviation_travel_time = pStandard_deviation;
 	}
-	public int darTrimestre()
+	public Short darTrimestre()
 	{
 		return trimestre;
 	}
-	public int darSourceid()
+	public Short darSourceid()
 	{
 		return sourceid;
 	}
-	public int darDistid()
+	public Short darDistid()
 	{
 		return distid;
 	}
-	public int darDow()
+	public Short darDow()
 	{
 		return dow;
 	}
@@ -44,26 +44,8 @@ public class TravelTime implements Comparable <TravelTime>
 	}
 	public int compareTo(TravelTime comp) 
 	{
-		double comparacion = this.darMeanTravelTime()-comp.darMeanTravelTime();
-		int compa=0;
-		if(comparacion > 0)
-		{
-			compa=1;
-		}
-		else if(comparacion < 0)
-		{
-			compa=-1;
-		}
-		else{
-			double comparacion2=this.darStandardDeviationTime()-comp.darStandardDeviationTime();
-			if(comparacion2 > 0){
-				compa=1;
-			}
-			else if(comparacion2 < 0){
-				compa=-1;
-			}
-		}
-		return compa;	
+		int comparacion = this.darDow()-comp.darDow();
+		return comparacion;
 	}
 }
 

@@ -29,7 +29,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 	{
 		elementos = newArray(max);
 		tamanoMax = max;
-		tamanoAct = max;
+		tamanoAct = 0;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,7 +72,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 	public void setTamanio(int tamanio) {
 		tamanoAct=tamanio;
 	}
-	/*	public void shellSort() 
+		public void shellSort() 
 	{ 
 		int n = tamanoAct; 
 
@@ -82,7 +82,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 			{ 
 				T temp = elementos[i]; 
 				int j; 
-				for (j = i; j >= intervalo &&this.darElemento(j-intervalo).compareTo(temp)<0; j -= intervalo) {
+				for (j = i; j >= intervalo &&this.darElementoPos(j-intervalo).compareTo(temp)<0; j -= intervalo) {
 					elementos[j] = elementos[j - intervalo]; 
 				}
 
@@ -91,7 +91,7 @@ public class ArregloDinamico<T extends Comparable<T> >  {
 		} 
 
 	}
-	 */
+	 
 	public T darElementoPos(int i) {
 
 		return elementos[i];

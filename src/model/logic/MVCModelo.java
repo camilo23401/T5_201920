@@ -1,6 +1,7 @@
 package model.logic;
 
 import java.io.FileReader;
+import java.util.Iterator;
 
 import com.opencsv.CSVReader;
 
@@ -20,14 +21,14 @@ public class MVCModelo {
 	private String llave;
 	private double value;
 	private TablaHashLineal<String, Double> tablaLineal;
-	private HashSeparateChaining<String, Double> tablaChaining;
+	private HashSeparateChaining<String, TravelTime> tablaChaining;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public MVCModelo()
 	{
-		tablaChaining=new HashSeparateChaining<String, Double>(20000000);
+		tablaChaining=new HashSeparateChaining<String, TravelTime>(20000000);
 	}
 
 	/**
@@ -60,19 +61,19 @@ public class MVCModelo {
 			{
 				if(contador==1)
 				{
-					TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
+					TravelTime viaje = new TravelTime(trimestre,Short.parseShort(siguiente[0]), Short.parseShort(siguiente[1]), Short.parseShort(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
 					llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 					value = Double.parseDouble(siguiente[3]);
 
-					tablaChaining.putInSet(llave, value);
+					tablaChaining.putInSet(llave, viaje);
 
 					primero = viaje;	
 				}
 
-				TravelTime viaje = new TravelTime(trimestre,Integer.parseInt(siguiente[0]), Integer.parseInt(siguiente[1]), Integer.parseInt(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));
+				TravelTime viaje = new TravelTime(trimestre,Short.parseShort(siguiente[0]), Short.parseShort(siguiente[1]), Short.parseShort(siguiente[2]), Double.parseDouble(siguiente[3]), Double.parseDouble(siguiente[4]));	
 				llave = trimestre + "-" + siguiente[0] + "-" + siguiente[1];
 				value = Double.parseDouble(siguiente[3]);
-				tablaChaining.putInSet(llave, value);
+				tablaChaining.putInSet(llave, viaje);
 				ultimo = viaje;
 
 
@@ -85,5 +86,15 @@ public class MVCModelo {
 		rta[0] = primero;
 		rta[1] = ultimo;
 		return rta;
+	}
+	
+	public ArregloDinamico<TravelTime> consultaChaining(String llave) {
+		Iterator<TravelTime>it=tablaChaining.getSet(llave);
+		ArregloDinamico<TravelTime>retorno=new ArregloDinamico<TravelTime>(200000);
+		while(it.hasNext()) {
+			retorno.agregar(it.next());
+		}
+		retorno.shellSort();
+		return retorno;
 	}
 }

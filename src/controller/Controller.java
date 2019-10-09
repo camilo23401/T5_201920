@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Scanner;
 
+import model.data_structures.ArregloDinamico;
 import model.logic.MVCModelo;
 import model.logic.TravelTime;
 import view.MVCView;
@@ -68,7 +69,22 @@ public class Controller {
 					}
 					
 					break;
-				case 2: 
+				case 3: 
+
+					System.out.println("Digite el trimestre a consultar");
+					String trimestre = lector.next();
+					System.out.println("Digite el número de la zona de origen");
+					String sourceId = lector.next();
+					System.out.println("Digite el número de la zona de destino");
+					String dstid = lector.next();
+					String llave=trimestre+"-"+sourceId+"-"+dstid;
+					ArregloDinamico<TravelTime>result=modelo.consultaChaining(llave);
+					for (int i = 0; i < result.darTamano(); i++) {
+						TravelTime actual=result.darElementoPos(i);
+						System.out.println("Viaje "+i+" "+"Trimestre: "+actual.darTrimestre()+" Origen:"+actual.darSourceid()+" Destino: "+actual.darDistid()+" Dia: "+actual.darDow()+" Tiempo Promedio: "+actual.darMeanTravelTime());
+					}
+					break;	
+				case 4: 
 					System.out.println("--------- \n Hasta pronto !! \n---------"); 
 					lector.close();
 					fin = true;
