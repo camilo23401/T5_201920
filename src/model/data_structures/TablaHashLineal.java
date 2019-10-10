@@ -190,7 +190,7 @@ public class TablaHashLineal <K extends Comparable<K>,V>
 			if(elemento!=null)
 			{
 				if(elemento.getLlave().equals(pLlave))
-				{
+				{ 
 					values.push(elemento.getValor());	
 				}
 			}

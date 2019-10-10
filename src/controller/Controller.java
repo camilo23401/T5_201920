@@ -98,6 +98,10 @@ public class Controller {
 					String dstid = lector.next();
 					String llave=trimestre+"-"+sourceId+"-"+dstid;
 					ArregloDinamico<TravelTime>result=modelo.consultaChaining(llave);
+					if(result.darTamano()==0)
+					{
+						System.out.println("No se encontraron viajes según los parámetros especificados");
+					}
 					for (int i = 0; i < result.darTamano(); i++) {
 						TravelTime actual=result.darElementoPos(i);
 						System.out.println("Viaje "+i+" "+"Trimestre: "+actual.darTrimestre()+" Origen:"+actual.darSourceid()+" Destino: "+actual.darDistid()+" Dia: "+actual.darDow()+" Tiempo Promedio: "+actual.darMeanTravelTime());
@@ -107,16 +111,16 @@ public class Controller {
 					System.out.println("Pruebas aleatorias");
 					String[]pruebas=modelo.pruebasChaining();
 					System.out.println("Chaining");
-					System.out.println("Tiempo Minimo :"+ pruebas[0]);
-					System.out.println("Tiempo Maximo :"+ pruebas[1]);
+					System.out.println("Tiempo Maximo :"+ pruebas[0]);
+					System.out.println("Tiempo Minimo :"+ pruebas[1]);
 					System.out.println("Tiempo Promedio :"+ pruebas[2]);
 					break;
 				case 5:
 					System.out.println("Pruebas aleatorias");
 					String[]pruebasl = modelo.pruebasLinearProbing();
 					System.out.println("Linear probing");
-					System.out.println("Tiempo Minimo :"+ pruebasl[0]);
-					System.out.println("Tiempo Maximo :"+ pruebasl[1]);
+					System.out.println("Tiempo Maximo :"+ pruebasl[0]);
+					System.out.println("Tiempo Minimo :"+ pruebasl[1]);
 					System.out.println("Tiempo Promedio :"+ pruebasl[2]);
 					break;
 					

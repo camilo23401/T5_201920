@@ -154,7 +154,7 @@ public class MVCModelo {
 		else if (t2>t1) {
 			retorno[0]=Double.toString(t2);
 			retorno[1]=Double.toString(t1);
-			retorno[2]=Double.toString(t2-t1);
+			retorno[2]=Double.toString((t1+t2)/2);
 		
 		}
 		return retorno;
@@ -184,14 +184,14 @@ public class MVCModelo {
 		if(t1>t2) {
 			retorno[0]=Double.toString(t1);
 			retorno[1]=Double.toString(t2);
-			retorno[2]=Double.toString(t1-t2);
+			retorno[2]=Double.toString((t1+t2)/2);
 			
 		}
 	
 		else if (t2>t1) {
 			retorno[0]=Double.toString(t2);
 			retorno[1]=Double.toString(t1);
-			retorno[2]=Double.toString(t2-t1);
+			retorno[2]=Double.toString((t1+t2)/2);
 		
 		}
 		return retorno;
